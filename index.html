@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>タブ</title>
+  <script src="js/jquery-2.1.3.min.js"></script>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="item">
+                <a href=""><img src="img/images.jpg" alt="イメージ" class="trim-image-to-circle">
+                </a>
+            </div>
+            <div class="item">
+                <h1 class="title">Notepassing</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- タブメニュー-->
+    <div class="tab">
+        <ul class="tab__menu">
+            <li class="tab__menu-item is-active" data-tab="01">交通</li>
+            <li class="tab__menu-item" data-tab="02">防災１</li>
+            <li class="tab__menu-item" data-tab="03">防災２</li>
+            <li class="tab__menu-item" data-tab="04">連絡(りじかい)</li>
+            <li class="tab__menu-item" data-tab="05">あいさつ</li>
+        </ul>
+        <!-- タブ１ -->
+        <div class="tab__panel">
+           <div class="tab__panel-box tab__panel-box001 is-show" data-panel="01">
+             <h1 class="tab__panel-text">Ｑ.電車は、あとどれくらいで動きますか？</h1>
+             <h2>指で書いてください</h2>
+             <canvas id="drawingCanvas01" width="500" height="200" style="border: 1px solid black;"></canvas>
+             <button onclick="clearCanvas('drawingCanvas01')">クリア</button>
+             <button onclick="saveImage('drawingCanvas01')">保存</button>
+             <button onclick="loadImage('drawingCanvas01')">呼び出し</button>
+           </div>
+        <!-- タブ2 -->
+           <div class="tab__panel02">
+           <div class="tab__panel-box tab__panel-box002" data-panel="02">
+             <h1 class="tab__panel-text">Ｑ.エレベーターが止まっているのはなぜですか？</h1>
+             <h2>指で書いてください</h2>
+             <canvas id="drawingCanvas02" width="500" height="200" style="border: 1px solid black;"></canvas>
+             <button onclick="clearCanvas('drawingCanvas02')">クリア</button>
+             <button onclick="saveImage('drawingCanvas02')">保存</button>
+             <button onclick="loadImage('drawingCanvas02')">呼び出し</button>
+           </div>
+           </div>
+        <!-- タブ３ -->
+           <div class="tab__panel03">
+           <div class="tab__panel-box tab__panel-box003" data-panel="03">
+           <h1 class="tab__panel-text">Ｑ.ひなん場所はどこですか？</h1>
+           <h2>指で書いてください</h2>
+           <canvas id="drawingCanvas03" width="500" height="200" style="border: 1px solid black;"></canvas>
+           <button onclick="clearCanvas('drawingCanvas03')">クリア</button>
+           <button onclick="saveImage('drawingCanvas03')">保存</button>
+           <button onclick="loadImage('drawingCanvas03')">呼び出し</button>
+           </div>
+           </div>
+        <!-- タブ４ -->
+           <div class="tab__panel04">
+           <div class="tab__panel-box tab__panel-box004" data-panel="04">
+           <h1 class="tab__panel-text">Ｑ.だいじな連絡はありますか？</h1>
+           <h2>指で書いてください</h2>
+           <canvas id="drawingCanvas04" width="500" height="200" style="border: 1px solid black;"></canvas>
+           <button onclick="clearCanvas('drawingCanvas04')">クリア</button>
+           <button onclick="saveImage('drawingCanvas04')">保存</button>
+           <button onclick="loadImage('drawingCanvas04')">呼び出し</button>
+           </div>
+           </div>
+    <!-- タブ切替 -->
+        <script>
+            const canvas = document.getElementById("drawingCanvas01");
+            const ctx = canvas.getContext("2d");
+            let isDrawing = false;
+    
+    // マウスイベントまたはタッチイベントの処理
+            canvas.addEventListener("mousedown", startDrawing);
+            canvas.addEventListener("mousemove", draw);
+            canvas.addEventListener("mouseup", stopDrawing);
+            canvas.addEventListener("touchstart", startDrawing);
+            canvas.addEventListener("touchmove", draw);
+            canvas.addEventListener("touchend", stopDrawing);
+    
+            function startDrawing(e) {
+                isDrawing = true;
+                ctx.beginPath();
+                ctx.moveTo(getX(e), getY(e));
+            }
+    
+            function draw(e) {
+                if (!isDrawing) return;
+                ctx.lineTo(getX(e), getY(e));
+                ctx.stroke();
+            }
+    
+            function stopDrawing() {
+                isDrawing = false;
+            }
+    
+            function clearCanvas() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+    
+            function saveImage() {
+                const dataURL = canvas.toDataURL("image/png");
+                localStorage.setItem("savedImage", dataURL);
+                alert("画像を保存しました。");
+            }
+    
+            function loadImage() {
+                const savedImage = localStorage.getItem("savedImage");
+                if (savedImage) {
+                    const img = new Image();
+                    img.src = savedImage;
+                    img.onload = () => {
+                        ctx.drawImage(img, 0, 0);
+                    };
+                } else {
+                    alert("保存された画像がありません。");
+                }
+            }
+    
+            function getX(e) {
+                return e.clientX - canvas.offsetLeft;
+            }
+    
+            function getY(e) {
+                return e.clientY - canvas.offsetTop;
+            }
+        // イベントリスナーを追加
+            document.getElementById('drawingCanvas01').addEventListener('mousedown', startDrawing);
+            document.getElementById('drawingCanvas01').addEventListener('mousemove', draw);
+            document.getElementById('drawingCanvas01').addEventListener('mouseup', endDrawing);
+            console.log("AAA")
+            document.getElementById('drawingCanvas02').addEventListener('mousedown', startDrawing);
+            document.getElementById('drawingCanvas02').addEventListener('mousemove', draw);
+            document.getElementById('drawingCanvas02').addEventListener('mouseup', endDrawing);
+            document.getElementById('drawingCanvas03').addEventListener('mousedown', startDrawing);
+            document.getElementById('drawingCanvas03').addEventListener('mousemove', draw);
+            document.getElementById('drawingCanvas03').addEventListener('mouseup', endDrawing);
+            document.getElementById('drawingCanvas04').addEventListener('mousedown', startDrawing);
+            document.getElementById('drawingCanvas04').addEventListener('mousemove', draw);
+            document.getElementById('drawingCanvas04').addEventListener('mouseup', endDrawing);
+        </script>
+      <!-- お礼タブ -->
+        <div class="tab__panel-box tab__panel-box005" data-panel="05">
+        <h2 class="tab__panel-text"></h2>
+        <img 
+        class="message" 
+        src="img/message_arigatou.png" alt="ありがとう" display:center>
+        </div>
+    </div>
+  <!-- スクリプトを読み込む -->
+       <script src="js/index.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

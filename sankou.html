@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvasタブ</title>
+    <style>
+        /* タブのスタイル */
+        .tab {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- タブ切り替え用のボタン -->
+    <button onclick="openTab('tab1')">タブ１</button>
+    <button onclick="openTab('tab2')">タブ２</button>
+    <button onclick="openTab('tab3')">タブ３</button>
+
+    <!-- タブ１ -->
+    <div id="tab1" class="tab active">
+        <canvas id="canvas1" width="400" height="200"></canvas>
+        <button onclick="saveCanvas('canvas1')">保存</button>
+        <button onclick="clearCanvas('canvas1')">消去</button>
+        <button onclick="restoreCanvas('canvas1')">呼び出し</button>
+    </div>
+
+    <!-- タブ２ -->
+    <div id="tab2" class="tab">
+        <canvas id="canvas2" width="400" height="200"></canvas>
+        <button onclick="saveCanvas('canvas2')">保存</button>
+        <button onclick="clearCanvas('canvas2')">消去</button>
+        <button onclick="restoreCanvas('canvas2')">呼び出し</button>
+    </div>
+
+    <!-- タブ３ -->
+    <div id="tab3" class="tab">
+        <canvas id="canvas3" width="400" height="200"></canvas>
+        <button onclick="saveCanvas('canvas3')">保存</button>
+        <button onclick="clearCanvas('canvas3')">消去</button>
+        <button onclick="restoreCanvas('canvas3')">呼び出し</button>
+    </div>
+
+    <script>
+        // タブ切り替え
+        function openTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // 描画
+        let isDrawing = false;
+        let lastX, lastY;
+        function startDrawing(event) {
+            isDrawing = true;
+            const canvas = event.target;
+            const ctx = canvas.getContext('2d');
+            [lastX, lastY] = [event.clientX, event.clientY];
+        }
+        function draw(event) {
+            if (!isDrawing) return;
+            const canvas = event.target;
+            const ctx = canvas.getContext('2d');
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(event.clientX, event.clientY);
+            ctx.stroke();
+            [lastX, lastY] = [event.clientX, event.clientY];
+        }
+        function endDrawing() {
+            isDrawing = false;
+        }
+
+        // 保存
+        function saveCanvas(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const dataURL = canvas.toDataURL('image/png');
+            localStorage.setItem(canvasId, dataURL);
+        }
+
+        // 消去
+        function clearCanvas(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // 呼び出し
+        function restoreCanvas(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const dataURL = localStorage.getItem(canvasId);
+            if (dataURL) {
+                const img = new Image();
+                img.src = dataURL;
+                img.onload = () => {
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                };
+            }
+        }
+
+        // イベントリスナーを追加
+        document.getElementById('canvas1').addEventListener('mousedown', startDrawing);
+        document.getElementById('canvas1').addEventListener('mousemove', draw);
+        document.getElementById('canvas1').addEventListener('mouseup', endDrawing);
+        document.getElementById('canvas2').addEventListener('mousedown', startDrawing);
+        document.getElementById('canvas2').addEventListener('mousemove', draw);
+        document.getElementById('canvas2').addEventListener('mouseup', endDrawing);
+        document.getElementById('canvas3').addEventListener('mousedown', startDrawing);
+        document.getElementById('canvas3').addEventListener('mousemove', draw);
+        document.getElementById('canvas3').addEventListener('mouseup', endDrawing);
+    </script>
+</body>
+</html>
+

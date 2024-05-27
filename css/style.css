@@ -1,0 +1,129 @@
+header{
+ height:4rem;
+ padding: 1rem 1rem 0rem 1rem;
+}
+
+.container{
+  display: flex;
+  justify-content: center;
+}
+
+.trim-image-to-circle {
+  background-image: url("img/images.jpg");  /* 表示する画像 */
+  width:  180px;       /* ※縦横を同値に */
+  height: 160px;       /* ※縦横を同値に */
+  border-radius: 50%;  /* 角丸半径を50%にする(=円形にする) */
+  background-position: center center;  /* 横長画像の左上を基準に表示 */
+}
+
+.title{
+ color:#cdcdcd;
+ font-family: 'Lucida Sans';
+ font-size: 4rem;
+ font-style: oblique;
+ font-weight: 300;
+ padding-top: 2rem;
+ padding-left: 1rem;
+}
+
+
+.tab {
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 120px;
+}
+
+/* タブメニュー */
+.tab__menu {
+  display: flex;
+  align-items: flex-end; /* メニューを下揃え&高さを調整 */
+  justify-content: center;
+  min-height: 50px; /* メニュー切替時にタブがズレないように */
+  padding: 0;
+  margin: 0;
+}
+
+.tab__menu-item {
+  list-style: none;
+  width: 200px;
+  padding: 8px 5px; /* メニューに高さを付ける */
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-right: 6px;
+  background-color: #cdcdcd;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  cursor: pointer;
+  transition: all .3s; /* アニメーション */
+}
+
+.tab__menu-item:last-of-type {
+  margin-right: 0px;
+}
+
+/* is-activeがついている時のスタイル */
+.tab__menu-item.is-active {
+  background-color: rgba(48, 172, 249);
+  color: #ffffff;
+  padding: 12px 5px;
+}
+
+/* タブパネル */
+.tab__panel {
+  width: 100%;
+ }
+ 
+ .tab__panel-box {
+   min-height: 400px; /* テキスト量が多くなっても対応できるように */
+   padding: 10px 30px;
+   border-radius: 10px;
+ }
+ 
+ .tab__panel-text{
+   font-size: 2rem;
+   font-weight: 600;
+   padding-top: 1rem;
+ }
+
+h2{
+  font-size: 1.6rem;
+  font-weight: 600;
+  padding-top: 2rem;
+}
+
+ .tab__panel-box001 {
+   background-color: rgb(205, 246, 246);
+   display: none;
+ }
+ 
+ .tab__panel-box002 {
+   background-color: rgb(249 227 243);
+   display: none;
+ }
+ 
+ .tab__panel-box003 {
+   background-color: rgb(200, 248, 195);
+   display: none;
+ }
+
+ .tab__panel-box004 {
+  background-color: yellow;
+  display: none;
+}
+ 
+.tab__panel-box005 {
+  background-color: white;
+  display: none;
+}
+ 
+ /* is-showがついている時のスタイル */
+ .tab__panel-box.is-show {
+   display: block;
+ }
+
+ .message {
+  width: 350px;
+    text-align: center;
+}
+
